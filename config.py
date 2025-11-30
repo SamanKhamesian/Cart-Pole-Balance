@@ -21,3 +21,6 @@ class TD3Config:
 
         # For action scaling
         self.max_action = 1.0
+
+        self.train_episodes = 500
+        self.test_episodes = 100

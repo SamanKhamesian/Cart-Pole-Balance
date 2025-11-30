@@ -43,7 +43,7 @@ class CartpoleEnv:
         return obs, reward, done
 
 
-def train_agent(s, env, agent, episodes=200):
+def train_agent(s, env, agent, episodes):
     rewards_per_episode = []
 
     for episode in range(episodes):
@@ -87,7 +87,7 @@ def run_train_agent():
         agent = TD3Agent(state_dim, action_dim, config)
 
         # Train
-        rewards = train_agent(s, env, agent, episodes=500)
+        rewards = train_agent(s, env, agent, episodes=config.train_episodes)
         all_rewards.append(rewards)
 
         print(f"Seed {s} finished.")
@@ -95,11 +95,12 @@ def run_train_agent():
     return np.array(all_rewards), agent
 
 
-def evaluate_agent(agent, episodes=100, render=False):
+def evaluate_agent(agent, render=False):
     rewards_per_episode = []
     env = CartpoleEnv(seed=SEED_TEST)
+    config = TD3Config()
 
-    for ep in range(episodes):
+    for ep in range(config.test_episodes):
         state = env.reset()
         done = False
         total_reward = 0
@@ -113,7 +114,7 @@ def evaluate_agent(agent, episodes=100, render=False):
                 env.env.physics.render()
 
         rewards_per_episode.append(total_reward)
-        print(f"Evaluation Episode {ep+1}/{episodes} | Reward: {total_reward:.2f}")
+        print(f"Evaluation Episode {ep + 1}/{config.test_episodes} | Reward: {total_reward:.2f}")
 
     return np.array(rewards_per_episode)
 
